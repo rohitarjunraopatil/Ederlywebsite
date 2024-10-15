@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Citizen Friendly Grocery Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; 
+            font-size: 16px;
+            color: #333; 
+            background-color: #088F8F; 
+            text-align: center; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            padding: 20px;
+            background-color: #444;
+            color: #fff;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #increaseFont {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        #decreaseFont {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; 
+            justify-content: center; 
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px; 
+            border: 1px solid #fff; 
+            border-radius: 5px; 
+            display: inline-block;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            min-width: 200px;
+            z-index: 1;
+            left: 50%; 
+            transform: translateX(-50%); 
+            text-align: left; 
+            margin-top: 10px;
+        }
+
+        .dropdown-content li {
+            list-style-type: none;
+            padding: 12px;
+            color: #333;
+        }
+
+        .dropdown-content li p {
+            margin: 0;
+        }
+
+        .dropdown-content li button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .dropdown-content li button:hover {
+            opacity: 0.8;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        #cart {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
+
+        #cart h2 {
+            font-size: 22px;
+        }
+
+        .remove-from-cart {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .remove-from-cart:hover {
+            background-color: #c00;
+        }
+
+        #emptyCart, #checkout {
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        #emptyCart {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        #emptyCart:hover {
+            background-color: #c62828;
+        }
+
+        #checkout {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        #checkout:hover {
+            background-color: #388E3C;
+        }
+
+        /* Dark theme styles */
+        .dark-theme {
+            background-color: #333; /* Dark background */
+            color: #f0f0f0;         /* Light text */
+        }
+
+        .dark-theme header {
+            background-color: #555;
+        }
+
+        .dark-theme nav {
+            background-color: #444;
+        }
+
+        .dark-theme nav ul li a {
+            border-color: #ddd;
+            color: #ddd;
+        }
+
+        .dark-theme nav ul li a:hover {
+            background-color: #666;
+        }
+
+        .dark-theme .container {
+            background-color: #444; /* Dark container background */
+        }
+
+        .dark-theme .dropdown-content {
+            background-color: #555;
+            border-color: #777;
+        }
+
+        .dark-theme #cart {
+            background-color: #555;
+            border-color: #777;
+        }
+
+        .dark-theme button {
+            background-color: #666;
+            color: #fff;
+        }
+
+        .dark-theme button:hover {
+            opacity: 0.9;
+        }
+
+        .dark-theme footer {
+            color: #ddd;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Grocery Store</h1>
+            <button id="increaseFont">Increase Font Size</button>
+            <button id="decreaseFont">Decrease Font Size</button>
+            <button id="toggleTheme">Toggle Theme</button>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#" class="dropdown-toggle" data-target="fruits">Fruits</a></li>
+                <li><a href="#" class="dropdown-toggle" data-target="vegetables">Vegetables</a></li>
+                <li><a href="#" class="dropdown-toggle" data-target="dairy">Dairy</a></li>
+                <li><a href="#" id="contactButton">Contact</a></li>
+            </ul>
+            <ul id="dropdownMenu" class="dropdown-content"></ul>
+        </nav>
+
+        <main>
+            <section id="cart" class="hidden">
+                <h2>Your Cart</h2>
+                <ul id="cartItems"></ul>
+                <p id="cartTotal">Total: $0.00</p>
+                <button id="emptyCart">Empty Cart</button>
+                <button id="checkout">Checkout</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Senior Citizen Friendly Grocery Store</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentFontSize = 16; 
+        const maxFontSize = 24;
+
+        document.getElementById('increaseFont').addEventListener('click', function() {
+            if (currentFontSize < maxFontSize) {
+                currentFontSize += 2;
+                document.body.style.fontSize = currentFontSize + 'px';
+            }
+        });
+
+        document.getElementById('decreaseFont').addEventListener('click', function() {
+            currentFontSize = Math.max(currentFontSize - 2, 16); 
+            document.body.style.fontSize = currentFontSize + 'px';
+        });
+
+        const cartItems = [];
+        const itemPrices = {
+            'Apples - $2.00': 2.00,
+            'Bananas - $1.50': 1.50,
+            'Oranges - $3.00': 3.00,
+            'Carrots - $3.00': 3.00,
+            'Lettuce - $2.50': 2.50,
+            'Tomatoes - $2.00': 2.00,
+            'Milk - $1.20': 1.20,
+            'Cheese - $4.00': 4.00,
+            'Yogurt - $1.80': 1.80
+        };
+
+        function updateCart() {
+            const cartList = document.getElementById('cartItems');
+            cartList.innerHTML = '';
+            let total = 0;
+            
+            cartItems.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item} <button class="remove-from-cart" data-index="${index}">Remove</button>`;
+                cartList.appendChild(li);
+             
+                total += itemPrices[item];
+            });
+
+            document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)}`;
+
+            document.querySelectorAll('.remove-from-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    cartItems.splice(index, 1);
+                    updateCart();
+                });
+            });
+        }
+
+        document.getElementById('emptyCart').addEventListener('click', function() {
+            cartItems.length = 0;  
+            updateCart();          
+        });
+
+        document.getElementById('checkout').addEventListener('click', function() {
+            alert('Thank you for shopping!');
+        });
+
+        document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+            dropdown.addEventListener('click', function(event) {
+                if (event.target.classList.contains('add-to-cart')) {
+                    const item = event.target.parentElement.querySelector('p').innerText;
+                    cartItems.push(item);
+                    updateCart();
+                }
+            });
+        });
+
+        document.querySelectorAll('.dropdown-toggle').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = this.getAttribute('data-target');
+                showDropdown(target);
+            });
+        });
+
+        function showDropdown(target) {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            let items = [];
+            
+            if (target === 'fruits') {
+                items = [
+                    'Apples - $2.00',
+                    'Bananas - $1.50',
+                    'Oranges - $3.00'
+                ];
+            } else if (target === 'vegetables') {
+                items = [
+                    'Carrots - $3.00',
+                    'Lettuce - $2.50',
+                    'Tomatoes - $2.00'
+                ];
+            } else if (target === 'dairy') {
+                items = [
+                    'Milk - $1.20',
+                    'Cheese - $4.00',
+                    'Yogurt - $1.80'
+                ];
+            }
+
+            dropdownMenu.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<p>${item}</p><button class="add-to-cart">Add to Cart</button>`;
+                dropdownMenu.appendChild(li);
+            });
+
+            dropdownMenu.classList.add('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-toggle')) {
+                document.getElementById('dropdownMenu').classList.remove('show');
+            }
+        });
+
+        document.getElementById('contactButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Owner: Atharva Shinde\nCall: 0123456789');
+        });
+
+        document.getElementById('toggleTheme').addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>
+</body>
+</html>
